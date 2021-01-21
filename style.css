@@ -12,3 +12,7 @@ td {
 td.black {
 	background: green;
 }
+
+td.red {
+	background: red;
+}

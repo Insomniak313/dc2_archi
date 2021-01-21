@@ -69,16 +69,22 @@
       return celluleContenantMinimum;
     }
 
-  	function parcoursRecursif(tableau, celluleOrigine) {
+  	var listePositionSuccessives = [];
+
+  	function parcoursRecursif(tableau, celluleOrigine, listePositionSuccessives) {
+      listePositionSuccessives.push(celluleOrigine);
+
       var celluleDestination = parcours(tableau, celluleOrigine);
       if(celluleDestination == null) {
 
       } else {
-        return parcoursRecursif(tableau, celluleDestination);
+        return parcoursRecursif(tableau, celluleDestination, listePositionSuccessives);
       }
     }
 
-    parcoursRecursif(tableau, tableau[2][1]);
+    parcoursRecursif(tableau, tableau[2][1], listePositionSuccessives);
+
+  	console.log(listePositionSuccessives);
 
   	function visiter(tableau, ligneCavalier, colonneCavalier) {
 
@@ -142,7 +148,7 @@
   		for(var i=0; i < tab.length; i++) {
   			retour = retour + '<tr>';
   			for(var j=0; j<tab[i].length ; j++) {
-				retour = retour + '<td class="' + tab[i][j].couleur + '">';
+				retour = retour + '<td id="' +tab[i][j].ligne + '_' + tab[i][j].colonne + '" class="' + tab[i][j].couleur + '">';
 				retour = retour + tab[i][j].compte;
 				retour = retour + '</td>';
   			}
@@ -158,7 +164,31 @@
 
   	$('#test').html(toto);
 
-  	console.log(tableau);
+    for(var ligne = 0; ligne < taille ; ligne++) {
+      for(var colonne = 0; colonne < taille ; colonne++) {
+        tableau[ligne][colonne].elementJquery = $('#' + ligne + '_' + colonne);
+      }
+    }
+
+  	for (var index in listePositionSuccessives) {
+
+  	   var pos = listePositionSuccessives[index];
+
+
+      setTimeout(function(){
+
+
+        $('#' + pos.ligne + '_' + pos.colonne).attr('class', 'red');
+
+
+        console.log('#' + pos.ligne + '_' + pos.colonne + ' en rouge');
+      }, index * 1000);
+
+
+
+
+    }
+
 
 
   </script>
