@@ -146,20 +146,27 @@
 
   		$('#conteneur_demineur').html(tableauEnHtml(tableauDeMines));
 
+  		var peutCliquer = true;
+
   		$('td').on('click', function () {
 
-  			var chaineLigneUnderscoreColonne = $(this).attr('id');
-			var chaineSplitee = chaineLigneUnderscoreColonne.split('_');
-			var numeroLigne = chaineSplitee[0];
-			var numeroColonne = chaineSplitee[1];
+  			if(peutCliquer) {
+				var chaineLigneUnderscoreColonne = $(this).attr('id');
+				var chaineSplitee = chaineLigneUnderscoreColonne.split('_');
+				var numeroLigne = chaineSplitee[0];
+				var numeroColonne = chaineSplitee[1];
 
-			var cellule = tableauDeMines[numeroLigne][numeroColonne];
+				var cellule = tableauDeMines[numeroLigne][numeroColonne];
 
-			if(cellule.estUneMine) {
-				$(this).html('X');
-			} else {
-				$(this).html(cellule.nbMineAlentours);
+				if(cellule.estUneMine) {
+					$(this).html('X');
+					alert('Vous avez perdu');
+					peutCliquer = false;
+				} else {
+					$(this).html(cellule.nbMineAlentours);
+				}
 			}
+
 
 		});
   		// var nbDeMines = 10;
