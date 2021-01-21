@@ -32,13 +32,16 @@
 
   				for(var colonne = 0; colonne < tableau[ligne].length; colonne++) {
 
-  					html = html + '<td>';
+  					html = html + '<td id="' + ligne + '_' + colonne +'">';
 
-  					if(tableau[ligne][colonne].estUneMine) {
-  						html = html + 'X';
-					} else {
-  						html = html + tableau[ligne][colonne].nbMineAlentours;
+  					if(tableau[ligne][colonne].estVisible) {
+						if(tableau[ligne][colonne].estUneMine) {
+							html = html + 'X';
+						} else {
+							html = html + tableau[ligne][colonne].nbMineAlentours;
+						}
 					}
+
   					// ECRIRE CONTENU CELLULE
 
 					html = html + '</td>';
@@ -69,6 +72,7 @@
   				}
 
   				tableauDeMines[i][j] = {};
+				tableauDeMines[i][j].estVisible = false;
   				tableauDeMines[i][j].estUneMine = estMine;
   			}
   		}
@@ -141,6 +145,23 @@
 		}
 
   		$('#conteneur_demineur').html(tableauEnHtml(tableauDeMines));
+
+  		$('td').on('click', function () {
+
+  			var chaineLigneUnderscoreColonne = $(this).attr('id');
+			var chaineSplitee = chaineLigneUnderscoreColonne.split('_');
+			var numeroLigne = chaineSplitee[0];
+			var numeroColonne = chaineSplitee[1];
+
+			var cellule = tableauDeMines[numeroLigne][numeroColonne];
+
+			if(cellule.estUneMine) {
+				$(this).html('X');
+			} else {
+				$(this).html(cellule.nbMineAlentours);
+			}
+
+		});
   		// var nbDeMines = 10;
 
   		// $('td').each(function(index) {
