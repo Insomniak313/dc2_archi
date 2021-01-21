@@ -29,76 +29,80 @@
 	  			tableau[ligne][colonne].couleur = 'white';
 	  		}
 	  		estNoir = !estNoir;
-	  	}  		
+	  	}
 	  	estNoir = !estNoir;
   	}
-
-
-
-
 
   	for(var ligne = 0; ligne < tableau.length ; ligne++) {
 
   		for(var colonne = 0; colonne < tableau[ligne].length; colonne++) {
 
-  			var cpt = 0;
-
-  			// Est-ce que la ligne 2 cran au dessus existe
-			if(typeof tableau[ligne-2] !== 'undefined') {
-				// Est-ce que la cellule 2 ligne au dessus et 1 colonne a droite existe
-	  			if(typeof tableau[ligne-2][colonne + 1] !== 'undefined') {
-	  				cpt = cpt +1;
-	  			}
-
-				// Est-ce que la cellule 2 ligne au dessus et 1 colonne a gauche existe
-	  			if(typeof tableau[ligne-2][colonne - 1] !== 'undefined') {
-	  				cpt = cpt +1;
-	  			}
-	  		}
-	  		// Est-ce que la ligne 1 cran au dessus existe
-			if(typeof tableau[ligne-1] !== 'undefined') {
-				// Est-ce que la cellule 1 ligne au dessus et 2 colonnes a droite existe
-	  			if(typeof tableau[ligne-1][colonne + 2] !== 'undefined') {
-	  				cpt = cpt +1;
-	  			}
-
-				// Est-ce que la cellule 1 ligne au dessus et 2 colonne a gauche existe
-	  			if(typeof tableau[ligne-1][colonne - 2] !== 'undefined') {
-	  				cpt = cpt +1;
-	  			}
-	  		}
-	  		// Est-ce que la ligne 2 cran au dessous existe
-			if(typeof tableau[ligne+2] !== 'undefined') {
-				// Est-ce que la cellule 2 ligne au dessous et 1 colonne a droite existe
-	  			if(typeof tableau[ligne+2][colonne + 1] !== 'undefined') {
-	  				cpt = cpt +1;
-	  			}
-
-				// Est-ce que la cellule 2 ligne au dessous et 1 colonne a gauche existe
-	  			if(typeof tableau[ligne+2][colonne - 1] !== 'undefined') {
-	  				cpt = cpt +1;
-	  			}
-	  		}
-	  		// Est-ce que la ligne 1 cran au dessous existe
-			if(typeof tableau[ligne+1] !== 'undefined') {
-				// Est-ce que la cellule 1 ligne au dessous et 2 colonnes a droite existe
-	  			if(typeof tableau[ligne+1][colonne + 2] !== 'undefined') {
-	  				cpt = cpt +1;
-	  			}
-
-				// Est-ce que la cellule 1 ligne au dessous et 2 colonne a gauche existe
-	  			if(typeof tableau[ligne+1][colonne - 2] !== 'undefined') {
-	  				cpt = cpt +1;
-	  			}
-	  		}
-
-	  		tableau[ligne][colonne].compte = cpt;
-
+	  		tableau[ligne][colonne].compte = visiter(tableau, ligne, colonne).length;
 
   		}
   	}
 
 
+
+  	tableau[2][1].compte = 0;
+    console.log(visiter(tableau, 2, 1));
+
+
+  	function visiter(tableau, ligneCavalier, colonneCavalier) {
+
+  	  var listeCellulesVisitables = [];
+
+          // Est-ce que la ligne 2 cran au dessus existe
+          if(typeof tableau[ligneCavalier-2] !== 'undefined') {
+            // Est-ce que la cellule 2 ligne au dessus et 1 colonne a droite existe
+            if(typeof tableau[ligneCavalier-2][colonneCavalier + 1] !== 'undefined') {
+              listeCellulesVisitables.push(tableau[ligneCavalier-2][colonneCavalier + 1]);
+            }
+
+            // Est-ce que la cellule 2 ligne au dessus et 1 colonne a gauche existe
+            if(typeof tableau[ligneCavalier-2][colonneCavalier - 1] !== 'undefined') {
+              listeCellulesVisitables.push(tableau[ligneCavalier-2][colonneCavalier - 1]);
+            }
+          }
+          // Est-ce que la ligne 1 cran au dessus existe
+          if(typeof tableau[ligneCavalier-1] !== 'undefined') {
+            // Est-ce que la cellule 1 ligne au dessus et 2 colonnes a droite existe
+            if(typeof tableau[ligneCavalier-1][colonneCavalier + 2] !== 'undefined') {
+              listeCellulesVisitables.push(tableau[ligneCavalier-1][colonneCavalier +2]);
+            }
+
+            // Est-ce que la cellule 1 ligne au dessus et 2 colonne a gauche existe
+            if(typeof tableau[ligneCavalier-1][colonneCavalier - 2] !== 'undefined') {
+              listeCellulesVisitables.push(tableau[ligneCavalier-1][colonneCavalier - 2]);
+            }
+          }
+          // Est-ce que la ligne 2 cran au dessous existe
+          if(typeof tableau[ligneCavalier+2] !== 'undefined') {
+            // Est-ce que la cellule 2 ligne au dessous et 1 colonne a droite existe
+            if(typeof tableau[ligneCavalier+2][colonneCavalier + 1] !== 'undefined') {
+              listeCellulesVisitables.push(tableau[ligneCavalier+2][colonneCavalier +1]);
+            }
+
+            // Est-ce que la cellule 2 ligne au dessous et 1 colonne a gauche existe
+            if(typeof tableau[ligneCavalier+2][colonneCavalier - 1] !== 'undefined') {
+              listeCellulesVisitables.push(tableau[ligneCavalier+2][colonneCavalier - 1]);
+            }
+          }
+          // Est-ce que la ligne 1 cran au dessous existe
+          if(typeof tableau[ligneCavalier+1] !== 'undefined') {
+            // Est-ce que la cellule 1 ligne au dessous et 2 colonnes a droite existe
+            if(typeof tableau[ligneCavalier+1][colonneCavalier + 2] !== 'undefined') {
+              listeCellulesVisitables.push(tableau[ligneCavalier+1][colonneCavalier+2]);
+            }
+
+            // Est-ce que la cellule 1 ligne au dessous et 2 colonne a gauche existe
+            if(typeof tableau[ligneCavalier+1][colonneCavalier - 2] !== 'undefined') {
+              listeCellulesVisitables.push(tableau[ligneCavalier+1][colonneCavalier - 2]);
+            }
+          }
+
+        return listeCellulesVisitables;
+    }
 
   	function tableauEnHtml(tab) {
   		var retour = '<table>';
@@ -123,7 +127,7 @@
   	$('#test').html(toto);
 
   	console.log(tableau);
-  	
+
 
   </script>
 </body>
