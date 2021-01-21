@@ -34,6 +34,9 @@
 
   					html = html + '<td>';
 
+  					if(tableau[ligne][colonne].estUneMine) {
+  						html = html + 'X';
+					}
   					// ECRIRE CONTENU CELLULE
 
 					html = html + '</td>';
@@ -70,58 +73,68 @@
 
   		console.log(tableauDeMines);
 
-  		for(var i = 0; i < tableauDeMines.length; i++) {
-	  		for(var j = 0; j < tableauDeMines[i].length; j++) {
-	  			if(tableauDeMines[i][j] == false) {
-	  				var cpt = 0;
-	  				// Cellule à droite
-	  				if(typeof tableauDeMines[i][j+1] != 'undefined' && tableauDeMines[i][j+1] ===true) {
-	  					cpt = cpt +1;
-	  				}
-	  				// Cellule à gauche
-	  				if(typeof tableauDeMines[i][j-1] != 'undefined' && tableauDeMines[i][j-1] === true) {
-	  					cpt = cpt +1;
-	  				}
-	  				// Est-ce que la ligne au dessus existe
-	  				if(typeof tableauDeMines[i+1] != 'undefined') {
-		  				// Cellule au dessus
-	  					if(tableauDeMines[i+1][j] === true) {
-		  					cpt = cpt +1;
-		  				}
-		  				// Cellule en haut à gauche
-		  				if(typeof tableauDeMines[i + 1][j - 1] != 'undefined' && tableauDeMines[i + 1][j - 1] ===true) {
-		  					cpt = cpt +1;
-		  				}
-		  				// Cellule en haut à droite
-		  				if(typeof tableauDeMines[i + 1][j + 1] != 'undefined' && tableauDeMines[i + 1][j + 1] ===true) {
-		  					cpt = cpt +1;
-		  				}
-	  				}
-	  				// Est-ce que la ligne en dessous existe
-	  				if(typeof tableauDeMines[i-1] != 'undefined') {
-	  					// Cellule en dessous
-	  					if(tableauDeMines[i-1][j] ===true) {
-		  					cpt = cpt +1;
-		  				}
-						// Cellule en bas à gauche
-		  				if(typeof tableauDeMines[i - 1][j - 1] != 'undefined' && tableauDeMines[i - 1][j - 1] === true) {
-		  					cpt = cpt +1;
-		  				}
-		  				// Cellule en bas à droite
-		  				if(typeof tableauDeMines[i - 1][j + 1] != 'undefined' && tableauDeMines[i - 1][j + 1] === true) {
-		  					cpt = cpt +1;
-		  				}
-	  				}
+  		for(var ligne = 0; ligne < tableauDeMines.length; ligne++) {
+  			for(var colonne = 0; colonne < tableauDeMines[ligne].length; colonne++) {
 
+  				if(tableauDeMines[ligne][colonne].estUneMine) {
 
+				} else {
 
+  					var cpt = 0;
 
-	  				tableauDeMines[i][j] = cpt;
+  					// Est-ce qu'il existe une ligne au dessus
+					if(typeof tableauDeMines[ligne - 1] !== 'undefined') {
+						// Si la cellule au dessus est une mine, j'incremente mon compteur
+						if(typeof tableauDeMines[ligne-1][colonne] !== 'undefined'
+								&& tableauDeMines[ligne-1][colonne].estUneMine) {
+							cpt = cpt + 1;
+						}
+						// Si la cellule au dessus à gauche est une mine, j'incremente mon compteur
+						if(typeof tableauDeMines[ligne-1][colonne - 1] !== 'undefined'
+							&& tableauDeMines[ligne-1][colonne - 1].estUneMine) {
+							cpt = cpt + 1;
+						}
+						// Si la cellule au dessus à droite est une mine, j'incremente mon compteur
+						if(typeof tableauDeMines[ligne-1][colonne + 1] !== 'undefined'
+							&& tableauDeMines[ligne-1][colonne + 1].estUneMine) {
+							cpt = cpt + 1;
+						}
+					}
 
-	  			}
-	  		}
-  		}
+					// Est-ce qu'il existe une ligne au dessous
+					if(typeof tableauDeMines[ligne + 1] !== 'undefined') {
+						// Si la cellule au dessous est une mine, j'incremente mon compteur
+						if(typeof tableauDeMines[ligne+1][colonne] !== 'undefined'
+								&& tableauDeMines[ligne+1][colonne].estUneMine) {
+							cpt = cpt + 1;
+						}
+						// Si la cellule au dessous à gauche est une mine, j'incremente mon compteur
+						if(typeof tableauDeMines[ligne+1][colonne - 1] !== 'undefined'
+								&& tableauDeMines[ligne+1][colonne - 1].estUneMine) {
+							cpt = cpt + 1;
+						}
+						// Si la cellule au dessous à droite est une mine, j'incremente mon compteur
+						if(typeof tableauDeMines[ligne+1][colonne + 1] !== 'undefined'
+								&& tableauDeMines[ligne+1][colonne + 1].estUneMine) {
+							cpt = cpt + 1;
+						}
+					}
 
+					// Si la cellule à droite est une mine, j'incremente mon compteur
+					if(typeof tableauDeMines[ligne][colonne + 1] !== 'undefined'
+						&& tableauDeMines[ligne][colonne + 1].estUneMine) {
+						cpt = cpt + 1;
+					}
+
+					// Si la cellule à gauche est une mine, j'incremente mon compteur
+					if(typeof tableauDeMines[ligne][colonne - 1] !== 'undefined'
+							&& tableauDeMines[ligne][colonne - 1].estUneMine) {
+						cpt = cpt + 1;
+					}
+
+				}
+			}
+		}
 
   		$('#conteneur_demineur').html(tableauEnHtml(tableauDeMines));
   		// var nbDeMines = 10;
