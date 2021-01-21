@@ -45,6 +45,11 @@
 
 
   	tableau[2][1].compte = 0;
+  	var cellulesVisitables = visiter(tableau, 2, 1);
+  	for(var cellule of cellulesVisitables) {
+        cellule.compte = cellule.compte - 1;
+    }
+
     console.log(visiter(tableau, 2, 1));
 
 
