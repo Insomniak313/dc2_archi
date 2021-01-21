@@ -28,10 +28,14 @@
 	  		} else {
 	  			tableau[ligne][colonne].couleur = 'white';
 	  		}
+	  		tableau[ligne][colonne].ligne = ligne;
+	  		tableau[ligne][colonne].colonne = colonne;
 	  		estNoir = !estNoir;
 	  	}
 	  	estNoir = !estNoir;
   	}
+
+
 
   	for(var ligne = 0; ligne < tableau.length ; ligne++) {
 
@@ -44,14 +48,37 @@
 
 
 
-  	tableau[2][1].compte = 0;
-  	var cellulesVisitables = visiter(tableau, 2, 1);
-  	for(var cellule of cellulesVisitables) {
+  	function parcours(tableau, celluleOrigine) {
+      celluleOrigine.compte = 0;
+
+      var cellulesVisitables = visiter(tableau, celluleOrigine.ligne, celluleOrigine.colonne);
+      for(var cellule of cellulesVisitables) {
         cellule.compte = cellule.compte - 1;
+      }
+
+      var minimum = 1000;
+      var celluleContenantMinimum = null;
+
+      for(var cellule of cellulesVisitables) {
+        if(cellule.compte < minimum && cellule.compte > 0) {
+          celluleContenantMinimum = cellule;
+          minimum = cellule.compte;
+        }
+      }
+
+      return celluleContenantMinimum;
     }
 
-    console.log(visiter(tableau, 2, 1));
+  	function parcoursRecursif(tableau, celluleOrigine) {
+      var celluleDestination = parcours(tableau, celluleOrigine);
+      if(celluleDestination == null) {
 
+      } else {
+        return parcoursRecursif(tableau, celluleDestination);
+      }
+    }
+
+    parcoursRecursif(tableau, tableau[2][1]);
 
   	function visiter(tableau, ligneCavalier, colonneCavalier) {
 
