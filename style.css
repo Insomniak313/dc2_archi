@@ -1,0 +1,14 @@
+td {
+	width: 40px;
+	height: 40px;
+	border: 1px solid black;
+	background: grey;
+	text-align: center;
+	font-size: 16px;
+	background: '#ccc';
+	font-weight: bold;
+}
+
+td.black {
+	background: green;
+}
