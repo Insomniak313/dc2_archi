@@ -23,16 +23,37 @@
   crossorigin="anonymous"></script>
   	<script>
 
-  		var nbLignes = 10;
-  		var nbColonnes = 15;
 
-  		var nbDeMinesAPlacer = 10;
-  		var tableauDeMines = [];
+  		function tableauEnHtml(tableau) {
+  			var html = '<table>';
 
-  		var html_demineur = '<table>';
+  			for(var ligne = 0; ligne < tableau.length; ligne++) {
+  				html = html + '<tr>';
+
+  				for(var colonne = 0; colonne < tableau[ligne].length; colonne++) {
+
+  					html = html + '<td>';
+
+  					// ECRIRE CONTENU CELLULE
+
+					html = html + '</td>';
+				}
+
+				html = html + '</tr>';
+			}
+  			html = html + '</table>';
+
+  			return html;
+		}
+
+		var nbLignes = 10;
+		var nbColonnes = 15;
+
+		var nbDeMinesAPlacer = 10;
+		var tableauDeMines = [];
+
   		for(var i = 0; i < nbLignes ; i = i +1 ) {
   			tableauDeMines[i] = [];
-  			html_demineur = html_demineur + '<tr>';
   			for(var j = 0; j < nbColonnes; j++) {
   				var rand = Math.random();
   				var estMine = false;
@@ -42,18 +63,10 @@
   					nbDeMinesAPlacer = nbDeMinesAPlacer - 1;
   				}
 
-  				tableauDeMines[i][j] = estMine;
-
-  				html_demineur = html_demineur + '<td>';
-
-  				if(estMine) {
-  					html_demineur = html_demineur + 'X';
-  				}
-  				html_demineur = html_demineur + '</td>';
+  				tableauDeMines[i][j] = {};
+  				tableauDeMines[i][j].estUneMine = estMine;
   			}
-  			html_demineur = html_demineur + '</tr>';
   		}
-  		html_demineur = html_demineur + '</table>';
 
   		console.log(tableauDeMines);
 
@@ -74,7 +87,7 @@
 		  				// Cellule au dessus
 	  					if(tableauDeMines[i+1][j] === true) {
 		  					cpt = cpt +1;
-		  				}	
+		  				}
 		  				// Cellule en haut à gauche
 		  				if(typeof tableauDeMines[i + 1][j - 1] != 'undefined' && tableauDeMines[i + 1][j - 1] ===true) {
 		  					cpt = cpt +1;
@@ -83,7 +96,7 @@
 		  				if(typeof tableauDeMines[i + 1][j + 1] != 'undefined' && tableauDeMines[i + 1][j + 1] ===true) {
 		  					cpt = cpt +1;
 		  				}
-	  				} 
+	  				}
 	  				// Est-ce que la ligne en dessous existe
 	  				if(typeof tableauDeMines[i-1] != 'undefined') {
 	  					// Cellule en dessous
@@ -98,29 +111,28 @@
 		  				if(typeof tableauDeMines[i - 1][j + 1] != 'undefined' && tableauDeMines[i - 1][j + 1] === true) {
 		  					cpt = cpt +1;
 		  				}
-	  				} 
+	  				}
 
 
-	  
+
 
 	  				tableauDeMines[i][j] = cpt;
 
 	  			}
-	  		}	
+	  		}
   		}
 
-  		  		console.log(tableauDeMines);
 
-  		$('#conteneur_demineur').html(html_demineur);
+  		$('#conteneur_demineur').html(tableauEnHtml(tableauDeMines));
   		// var nbDeMines = 10;
 
   		// $('td').each(function(index) {
   		// 	var rand = Math.random();
   		// 	if(rand < 0.5 && nbDeMines > 0) {
   		// 		$(this).html('X');
-  		// 		nbDeMines = nbDeMines - 1;	
+  		// 		nbDeMines = nbDeMines - 1;
   		// 	}
-  			
+
   		// });
   	</script>
 </body>
