@@ -36,6 +36,8 @@
 
   					if(tableau[ligne][colonne].estUneMine) {
   						html = html + 'X';
+					} else {
+  						html = html + tableau[ligne][colonne].nbMineAlentours;
 					}
   					// ECRIRE CONTENU CELLULE
 
@@ -132,6 +134,8 @@
 						cpt = cpt + 1;
 					}
 
+
+					tableauDeMines[ligne][colonne].nbMineAlentours = cpt;
 				}
 			}
 		}
