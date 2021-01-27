@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<div id="test"></div>
+<div id="echiquier"></div>
 
 <script
   src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -15,40 +15,14 @@
 
   <script type="text/javascript">
 
-  	var taille = 8;
-  	var tableau = [];
-  	var estNoir = false;
-
-  	for(var ligne = 0; ligne < taille ; ligne++) {
-  		tableau[ligne] = [];
-		for(var colonne = 0; colonne < taille ; colonne++) {
-	  		tableau[ligne][colonne] = {};
-	  		if(estNoir) {
-	  			tableau[ligne][colonne].couleur = 'black'
-	  		} else {
-	  			tableau[ligne][colonne].couleur = 'white';
-	  		}
-	  		tableau[ligne][colonne].ligne = ligne;
-	  		tableau[ligne][colonne].colonne = colonne;
-	  		estNoir = !estNoir;
-	  	}
-	  	estNoir = !estNoir;
-  	}
-
-
-
-  	for(var ligne = 0; ligne < tableau.length ; ligne++) {
-
-  		for(var colonne = 0; colonne < tableau[ligne].length; colonne++) {
-
-	  		tableau[ligne][colonne].compte = visiter(tableau, ligne, colonne).length;
-
-  		}
-  	}
-
-
-
-  	function parcours(tableau, celluleOrigine) {
+    /**
+     * Fonction permettant de trouver le meilleur mouvement unitaire du cavalier :
+     * à partir d'une position donnée, on va trouver vers quelle cellule se déplacer
+     * @param tableau Notre échiquier
+     * @param celluleOrigine La cellule sur laquelle se trouve le cavalier
+     * @param cellule La cellule vers laquelle le cavalier devra se déplacer
+     */
+    function parcours(tableau, celluleOrigine) {
       celluleOrigine.compte = 0;
 
       var cellulesVisitables = visiter(tableau, celluleOrigine.ligne, celluleOrigine.colonne);
@@ -69,100 +43,148 @@
       return celluleContenantMinimum;
     }
 
-  	var listePositionSuccessives = [];
-
-  	function parcoursRecursif(tableau, celluleOrigine, listePositionSuccessives) {
+    /**
+     * Fonction permettant de parcourir de manière récursive un échiquier en suivant le parcourt
+     * du cavalier
+     * @param tableau Notre échiquier
+     * @param celluleOrigine La cellule sur laquelle se trouve le cavalier
+     * @param [cellules] La liste des cellules sur lesquelles le cavalier peut se déplacer
+     */
+    function parcoursRecursif(tableau, celluleOrigine, listePositionSuccessives) {
       listePositionSuccessives.push(celluleOrigine);
 
       var celluleDestination = parcours(tableau, celluleOrigine);
-      if(celluleDestination == null) {
-
-      } else {
+      if(celluleDestination !== null) {
         return parcoursRecursif(tableau, celluleDestination, listePositionSuccessives);
       }
     }
 
-    parcoursRecursif(tableau, tableau[2][1], listePositionSuccessives);
+    /**
+     * Fonction permettant de récupérer l'ensemble des cellules sur lequel notre cavalier peut se déplacer
+     * @param tableau Notre échiquier
+     * @param ligneCavalier La ligne sur laquelle se trouve le cavalier
+     * @param colonneCavalier La colonne sur laquelle se trouve le cavalier
+     * @returns [cellules]
+     */
+    function visiter(tableau, ligneCavalier, colonneCavalier) {
 
-  	console.log(listePositionSuccessives);
+      var listeCellulesVisitables = [];
 
-  	function visiter(tableau, ligneCavalier, colonneCavalier) {
+      // Est-ce que la ligne 2 cran au dessus existe
+      if(typeof tableau[ligneCavalier-2] !== 'undefined') {
+        // Est-ce que la cellule 2 ligne au dessus et 1 colonne a droite existe
+        if(typeof tableau[ligneCavalier-2][colonneCavalier + 1] !== 'undefined') {
+          listeCellulesVisitables.push(tableau[ligneCavalier-2][colonneCavalier + 1]);
+        }
 
-  	  var listeCellulesVisitables = [];
+        // Est-ce que la cellule 2 ligne au dessus et 1 colonne a gauche existe
+        if(typeof tableau[ligneCavalier-2][colonneCavalier - 1] !== 'undefined') {
+          listeCellulesVisitables.push(tableau[ligneCavalier-2][colonneCavalier - 1]);
+        }
+      }
+      // Est-ce que la ligne 1 cran au dessus existe
+      if(typeof tableau[ligneCavalier-1] !== 'undefined') {
+        // Est-ce que la cellule 1 ligne au dessus et 2 colonnes a droite existe
+        if(typeof tableau[ligneCavalier-1][colonneCavalier + 2] !== 'undefined') {
+          listeCellulesVisitables.push(tableau[ligneCavalier-1][colonneCavalier +2]);
+        }
 
-          // Est-ce que la ligne 2 cran au dessus existe
-          if(typeof tableau[ligneCavalier-2] !== 'undefined') {
-            // Est-ce que la cellule 2 ligne au dessus et 1 colonne a droite existe
-            if(typeof tableau[ligneCavalier-2][colonneCavalier + 1] !== 'undefined') {
-              listeCellulesVisitables.push(tableau[ligneCavalier-2][colonneCavalier + 1]);
-            }
+        // Est-ce que la cellule 1 ligne au dessus et 2 colonne a gauche existe
+        if(typeof tableau[ligneCavalier-1][colonneCavalier - 2] !== 'undefined') {
+          listeCellulesVisitables.push(tableau[ligneCavalier-1][colonneCavalier - 2]);
+        }
+      }
+      // Est-ce que la ligne 2 cran au dessous existe
+      if(typeof tableau[ligneCavalier+2] !== 'undefined') {
+        // Est-ce que la cellule 2 ligne au dessous et 1 colonne a droite existe
+        if(typeof tableau[ligneCavalier+2][colonneCavalier + 1] !== 'undefined') {
+          listeCellulesVisitables.push(tableau[ligneCavalier+2][colonneCavalier +1]);
+        }
 
-            // Est-ce que la cellule 2 ligne au dessus et 1 colonne a gauche existe
-            if(typeof tableau[ligneCavalier-2][colonneCavalier - 1] !== 'undefined') {
-              listeCellulesVisitables.push(tableau[ligneCavalier-2][colonneCavalier - 1]);
-            }
-          }
-          // Est-ce que la ligne 1 cran au dessus existe
-          if(typeof tableau[ligneCavalier-1] !== 'undefined') {
-            // Est-ce que la cellule 1 ligne au dessus et 2 colonnes a droite existe
-            if(typeof tableau[ligneCavalier-1][colonneCavalier + 2] !== 'undefined') {
-              listeCellulesVisitables.push(tableau[ligneCavalier-1][colonneCavalier +2]);
-            }
+        // Est-ce que la cellule 2 ligne au dessous et 1 colonne a gauche existe
+        if(typeof tableau[ligneCavalier+2][colonneCavalier - 1] !== 'undefined') {
+          listeCellulesVisitables.push(tableau[ligneCavalier+2][colonneCavalier - 1]);
+        }
+      }
+      // Est-ce que la ligne 1 cran au dessous existe
+      if(typeof tableau[ligneCavalier+1] !== 'undefined') {
+        // Est-ce que la cellule 1 ligne au dessous et 2 colonnes a droite existe
+        if(typeof tableau[ligneCavalier+1][colonneCavalier + 2] !== 'undefined') {
+          listeCellulesVisitables.push(tableau[ligneCavalier+1][colonneCavalier+2]);
+        }
 
-            // Est-ce que la cellule 1 ligne au dessus et 2 colonne a gauche existe
-            if(typeof tableau[ligneCavalier-1][colonneCavalier - 2] !== 'undefined') {
-              listeCellulesVisitables.push(tableau[ligneCavalier-1][colonneCavalier - 2]);
-            }
-          }
-          // Est-ce que la ligne 2 cran au dessous existe
-          if(typeof tableau[ligneCavalier+2] !== 'undefined') {
-            // Est-ce que la cellule 2 ligne au dessous et 1 colonne a droite existe
-            if(typeof tableau[ligneCavalier+2][colonneCavalier + 1] !== 'undefined') {
-              listeCellulesVisitables.push(tableau[ligneCavalier+2][colonneCavalier +1]);
-            }
+        // Est-ce que la cellule 1 ligne au dessous et 2 colonne a gauche existe
+        if(typeof tableau[ligneCavalier+1][colonneCavalier - 2] !== 'undefined') {
+          listeCellulesVisitables.push(tableau[ligneCavalier+1][colonneCavalier - 2]);
+        }
+      }
 
-            // Est-ce que la cellule 2 ligne au dessous et 1 colonne a gauche existe
-            if(typeof tableau[ligneCavalier+2][colonneCavalier - 1] !== 'undefined') {
-              listeCellulesVisitables.push(tableau[ligneCavalier+2][colonneCavalier - 1]);
-            }
-          }
-          // Est-ce que la ligne 1 cran au dessous existe
-          if(typeof tableau[ligneCavalier+1] !== 'undefined') {
-            // Est-ce que la cellule 1 ligne au dessous et 2 colonnes a droite existe
-            if(typeof tableau[ligneCavalier+1][colonneCavalier + 2] !== 'undefined') {
-              listeCellulesVisitables.push(tableau[ligneCavalier+1][colonneCavalier+2]);
-            }
-
-            // Est-ce que la cellule 1 ligne au dessous et 2 colonne a gauche existe
-            if(typeof tableau[ligneCavalier+1][colonneCavalier - 2] !== 'undefined') {
-              listeCellulesVisitables.push(tableau[ligneCavalier+1][colonneCavalier - 2]);
-            }
-          }
-
-        return listeCellulesVisitables;
+      return listeCellulesVisitables;
     }
 
-  	function tableauEnHtml(tab) {
-  		var retour = '<table>';
+    /**
+     * Fonction permettant de construire le code HTML permettant de dessiner notre échiquier
+     * @param tab
+     * @returns {string}
+     */
+    function tableauEnHtml(tab) {
+      var retour = '<table>';
 
-  		for(var i=0; i < tab.length; i++) {
-  			retour = retour + '<tr>';
-  			for(var j=0; j<tab[i].length ; j++) {
-				retour = retour + '<td id="' +tab[i][j].ligne + '_' + tab[i][j].colonne + '" class="' + tab[i][j].couleur + '">';
-				retour = retour + tab[i][j].compte;
-				retour = retour + '</td>';
-  			}
-  			retour = retour + '</tr>';
-  		}
+      for(var i=0; i < tab.length; i++) {
+        retour = retour + '<tr>';
+        for(var j=0; j<tab[i].length ; j++) {
+          retour = retour + '<td id="' +tab[i][j].ligne + '_' + tab[i][j].colonne + '" class="' + tab[i][j].couleur + '">';
+          retour = retour + '</td>';
+        }
+        retour = retour + '</tr>';
+      }
 
-  		retour = retour + '</table>';
-  		return retour;
+      retour = retour + '</table>';
+      return retour;
+    }
+
+    // Définition des différentes variables
+  	var taille = 8;
+  	var tableau = [];
+  	var estNoir = false;
+
+  	// Construction de l'échiquier : chaque cellule va être un objet qui va détenir différentes propriétés
+    // (notamment la couleur que l'on définit ici)
+  	for(var ligne = 0; ligne < taille ; ligne++) {
+  		tableau[ligne] = [];
+		for(var colonne = 0; colonne < taille ; colonne++) {
+	  		tableau[ligne][colonne] = {};
+	  		if(estNoir) {
+	  			tableau[ligne][colonne].couleur = 'black'
+	  		} else {
+	  			tableau[ligne][colonne].couleur = 'white';
+	  		}
+	  		tableau[ligne][colonne].ligne = ligne;
+	  		tableau[ligne][colonne].colonne = colonne;
+	  		estNoir = !estNoir;
+	  	}
+	  	estNoir = !estNoir;
   	}
 
+  	// Pour chaque cellule de l'échiquier on va compter combien de cellule on peut atteindre avec notre cavalier
+    // Ce nombre est équivalent au nombre de déplacement lorsqu'on est sur une cellule renvoyés par la fonction "visiter"
+  	for(var ligne = 0; ligne < tableau.length ; ligne++) {
+  		for(var colonne = 0; colonne < tableau[ligne].length; colonne++) {
+	  		tableau[ligne][colonne].compte = visiter(tableau, ligne, colonne).length;
+  		}
+  	}
 
-  	var toto = tableauEnHtml(tableau);
+  	// On construit le parcours du cavalier
+  	var listePositionSuccessives = [];
 
-  	$('#test').html(toto);
+    parcoursRecursif(tableau, tableau[2][1], listePositionSuccessives);
+
+    // On écrit le code HTML de l'échiquier
+  	var tableauHtml = tableauEnHtml(tableau);
+
+  	$('#echiquier').html(tableauHtml);
+
+  	// Puis on n'a plus qu'a faire l'animation, le déplacement du cavalier
 
     for(var ligne = 0; ligne < taille ; ligne++) {
       for(var colonne = 0; colonne < taille ; colonne++) {
@@ -170,26 +192,15 @@
       }
     }
 
-  	for (var index in listePositionSuccessives) {
-
-  	   var pos = listePositionSuccessives[index];
-
-
-      setTimeout(function(){
-
-
-        $('#' + pos.ligne + '_' + pos.colonne).attr('class', 'red');
-
-
-        console.log('#' + pos.ligne + '_' + pos.colonne + ' en rouge');
-      }, index * 1000);
-
-
-
-
+    for (var index in listePositionSuccessives) {
+      (function(){
+          const currentIndex = index;
+          setTimeout(function(){
+            $('#' + listePositionSuccessives[currentIndex].ligne + '_' + listePositionSuccessives[currentIndex].colonne).attr('class', 'red');
+          }, index * 1000);
+      }
+      )();
     }
-
-
 
   </script>
 </body>
