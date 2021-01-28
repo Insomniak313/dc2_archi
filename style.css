@@ -1,0 +1,17 @@
+
+.row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+
+img {
+	border-radius: 50%;
+	width: 300px;
+}
+
+#compteur {
+	font-size: 25px;
+	font-weight: 900;
+}
