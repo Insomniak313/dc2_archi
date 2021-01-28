@@ -5,10 +5,6 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-
-// Guide Flex
-// https://css-tricks.com/snippets/css/a-guide-to-flexbox/
-
 <div id="carousel">
 
     <div id="fleche_gauche">
@@ -41,7 +37,42 @@
 
   <script type="text/javascript">
 
+    $('#fleche_gauche').on('click', function() {
 
+      var url = window.location.href;
+      var positionDuDiese = url.indexOf('#');
+
+      // Il n'y a pas de diese dans l'URL
+      if(positionDuDiese == -1) {
+        var urlSansLaPartieDiese = url;
+      } else {
+        // Il y a un diese dans l'URL
+        var urlSansLaPartieDiese = url.substr(0, positionDuDiese);
+
+      }
+
+
+      // S'il y a "#image_1" dans l'URL actuelle OU qu'l n'y a ni "#image_1" ni "#image_2" ni "#image_3"
+      if(url.indexOf('#image_1') > -1
+        ||
+        url.indexOf('#image_1') == -1
+        && url.indexOf('#image_2') == -1
+        && url.indexOf('#image_3') == -1) {
+
+
+        window.location.href = urlSansLaPartieDiese + '#image_3';
+      }
+
+      // S'il y a "#image_2" dans l'URL actuelle
+      if(url.indexOf('#image_2') > -1) {
+        window.location.href = urlSansLaPartieDiese + '#image_1';
+      }
+
+      // S'il y a "#image_3" dans l'URL actuelle
+      if(url.indexOf('#image_3') > -1) {
+        window.location.href = urlSansLaPartieDiese + '#image_2';
+      }
+    });
   </script>
 </body>
 </html>
